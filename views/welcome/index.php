@@ -1,5 +1,23 @@
 <?php
+use App\Controllers\UsersController;
+use App\Session\Session;
+if(isset($_POST['login'])){
+    $user = new UsersController();
+    $user->email = $_POST['email'];
+    $user->password = bcrypt($_POST['password']);
 
+
+    $user_found = UsersController::login($user->email,$user->password);
+    if($user_found){
+        $session = new Session();
+        $session->login($user_found);
+        redirect("index.php");
+    }
+    else{
+        $msg = "<div class='text-danger'>Email or Password is incorrent</div>";
+
+    }
+}
 
 ?>
 
